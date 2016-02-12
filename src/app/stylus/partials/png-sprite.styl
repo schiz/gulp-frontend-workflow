@@ -1,0 +1,74 @@
+bgi_img_x1 = url('sprite/png-sprite.png')
+
+.s-global
+  background-image bgi_img_x1
+  display: inline-block;
+  background-repeat: no-repeat;
+
+/* i.s-global.s-test_png */
+$test_png = 0px 0px 0px 0px 18px 18px 18px 18px 'sprite/png-sprite.png' 'test_png';
+.s-test_png {
+  background-position: $test_png[2] $test_png[3];
+  width: $test_png[4];
+  height: $test_png[5];
+}
+
+
+$spritesheet_width = 18px;
+$spritesheet_height = 18px;
+$spritesheet_image = 'sprite/png-sprite.png';
+$spritesheet_sprites = $test_png;
+$spritesheet = 18px 18px 'sprite/png-sprite.png' $spritesheet_sprites;
+
+/*
+The provided mixins are intended to be used with the array-like variables
+
+.icon-home {
+  spriteWidth($icon_home)
+}
+
+.icon-email {
+  sprite($icon_email)
+}
+*/
+
+spriteWidth($sprite) {
+  width: $sprite[4];
+}
+
+spriteHeight($sprite) {
+  height: $sprite[5];
+}
+
+spritePosition($sprite) {
+  background-position: $sprite[2] $sprite[3];
+}
+
+spriteImage($sprite) {
+  background-image: url($sprite[8]);
+}
+
+sprite($sprite) {
+  spriteImage($sprite)
+  spritePosition($sprite)
+  spriteWidth($sprite)
+  spriteHeight($sprite)
+}
+
+/*
+The `sprites` mixin generates identical output to the CSS template
+  but can be overridden inside of Stylus
+
+This must be run when you have at least 2 sprites.
+  If run with a single sprite, then there will be reference errors.
+
+sprites($spritesheet_sprites);
+*/
+sprites($sprites) {
+  for $sprite in $sprites {
+    $sprite_name = $sprite[9];
+    .{$sprite_name} {
+      sprite($sprite);
+    }
+  }
+}
